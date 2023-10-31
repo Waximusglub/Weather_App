@@ -1,26 +1,51 @@
 import React from 'react';
 import axios from 'axios';
+import {WeatherApi as keyapi} from './keys.json';
+
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
+
 
 axios({
   headers: {
-    'api_key' : 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZXJnaW1hbjAzODZAZ21haWwuY29tIiwianRpIjoiNWExNzYyYmMtMmY5Mi00YzNiLWI0MWEtN2E5MjdmYzJhMDliIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE2OTg2NjYxMzAsInVzZXJJZCI6IjVhMTc2MmJjLTJmOTItNGMzYi1iNDFhLTdhOTI3ZmMyYTA5YiIsInJvbGUiOiIifQ.KBKeyn6u-Db7-OIoZ3AgaEWGF5E9piRfUzduA-wqwkQ',
+    'api_key': keyapi,
   },
   method: 'get',
   url: `https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/25072`,
 }).then((response) => {
-  console.log(response.data);
+
+  axios.get(response.data.datos).then((response) => {
+
+
+    const data = response.data
+
+    const origin = data[0].origen
+
+    const source = {
+      productor: origin.productor,
+      web: origin.web,
+      enlace: origin.enlace,
+      copyright: origin.copyright,
+      notaLegal: origin.notaLegal
+    }
+
+    const prediction = data[0].prediccion.dia
+
+    
+    const week= [];
+    prediction.forEach(dia=>{
+      week.push(dia);
+      console.log(Object.values(dia));
+    })
+
+  })
 });
 
-export default App = () =>{
-  return(
+export default App = () => {
+  return (
     <View style={styles.container}>
       <Text style={styles.title}>App Temps</Text>
     </View>
