@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios';
-import {WeatherApi as keyapi} from './keys.json';
+import getPrediction from './helper/getPrediction';
+
 
 import {
   StyleSheet,
@@ -8,41 +8,7 @@ import {
   View
 } from 'react-native';
 
-
-axios({
-  headers: {
-    'api_key': keyapi,
-  },
-  method: 'get',
-  url: `https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/25072`,
-}).then((response) => {
-
-  axios.get(response.data.datos).then((response) => {
-
-
-    const data = response.data
-
-    const origin = data[0].origen
-
-    const source = {
-      productor: origin.productor,
-      web: origin.web,
-      enlace: origin.enlace,
-      copyright: origin.copyright,
-      notaLegal: origin.notaLegal
-    }
-
-    const prediction = data[0].prediccion.dia
-
-    
-    const week= [];
-    prediction.forEach(dia=>{
-      week.push(dia);
-      console.log(Object.values(dia));
-    })
-
-  })
-});
+getPrediction()
 
 export default App = () => {
   return (
