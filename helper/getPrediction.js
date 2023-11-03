@@ -5,46 +5,47 @@ import { WeatherApi as keyapi } from '../keys.json';
 const getPrediction = async () => {
 
   let code= "25072"
-
-  var week=[]
+  const predicciones = [];
 
     await axios.get(`https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/${code}`, {
         headers: {
             'api_key': keyapi,
         }
-    }).then((response) => {
+    }).then( async (response) => {
 
       console.log("Prediction: " + response.data.datos)
 
-      axios.get(response.data.datos).then((response) => {
+      await axios.get(response.data.datos).then((response) => {
 
         const data = response.data
         const prediction = data[0].prediccion.dia;
 
+        prediction.map((dia) => {
 
+          const obj={
+            fecha: dia.fecha,
+            // probPrecipitacion: dia.probPrecipitacion,
+            // cotaNieveProv: dia.cotaNieveProv,
+            // estadoCielo: dia.estadoCielo,
+            // viento: dia.viento,
+            // rachaMax: dia.rachaMax,
+            temperatura: dia.temperatura,
+            sensTermica: dia.sensTermica,
+            humedadRelativa: dia.humedadRelativa,
+            
+          }
 
+          predicciones.push(obj);
+        });
 
-
-
-
-        // prediction.forEach((dia, index) => {
-        //   console.log(`Día ${index + 1}: Fecha - ${dia.fecha}, Temperatura - ${dia.temperatura}`);
-        // });
-
-        prediction.map((dia,index) => ({
-
-        }));
-    
-        // // Mostrar los datos transformados
-        // console.log(transformedData);
-        
-        
       })
     
-    
     }).catch(err=>{
-      console.log("Error a la crida de API")
+      console.log(`Error a la crida de API: \n ${err}`)
     })
+
+    return predicciones;
+
 };
 
 export default getPrediction

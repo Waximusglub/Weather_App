@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import getPrediction from './helper/getPrediction';
+
 
 
 import {
@@ -8,12 +9,39 @@ import {
   View
 } from 'react-native';
 
-getPrediction()
+
 
 export default App = () => {
+
+  const [predicciones, setPredicciones] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const prediccionesObtenidas = await getPrediction();
+        setPredicciones(prediccionesObtenidas);   
+      } catch (err) {
+        console.log(`Error get pred: \n ${err}`)
+      }
+    }
+    getData()
+  }, [])
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>App Temps</Text>
+      {predicciones.map((dia, index) => (
+        <View key={index}>
+          <Text>Fecha: {dia.fecha}</Text>
+          <Text>Temperatura: {dia.temperatura.maxima}</Text>
+          <Text>Sensación térmica: {dia.sensTermica.maxima}</Text>
+          <Text>Humedad relativa: {dia.humedadRelativa.maxima}</Text>
+        </View>
+      ))}
+
+
+
     </View>
   )
 };
