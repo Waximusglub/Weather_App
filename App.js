@@ -26,31 +26,41 @@ export default App = () => {
     }
     getData()
   }, [])
-
-
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>App Temps</Text>
-      {predicciones.map((dia, index) => (
-        <View key={index}>
-          <Text>Fecha: {dia.fecha}</Text>
-          <Text>Temperatura: {dia.temperatura.maxima}</Text>
-          <Text>Sensación térmica: {dia.sensTermica.maxima}</Text>
-          <Text>Humedad relativa: {dia.humedadRelativa.maxima}</Text>
-        </View>
-      ))}
-
-
-
-    </View>
+    {predicciones.map((dia, index) => (
+      <View key={index}>
+        {index === 0 ? (
+          <View style={styles.today}>
+            <View >
+              <Text> Dimarts {dia.fecha}</Text>
+              <Text>{dia.temperatura.maxima}ºC</Text>
+            </View>
+            <View>
+              <Text>Sensación térmica: {dia.sensTermica.maxima}</Text>
+              <Text>Humedad: {dia.humedadRelativa.maxima}%</Text>
+            </View>
+          </View>
+        ) : (
+          <View>
+            <Text>{dia.fecha}</Text>
+            <Text>{dia.temperatura.maxima}ºC</Text>
+            <Text>Sensación térmica: {dia.sensTermica.maxima}</Text>
+            <Text>Humedad: {dia.humedadRelativa.maxima}%</Text>
+          </View>
+        )}
+      </View>
+    ))}
+  </View>
   )
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: '#eaeaea',
+    padding: 20,
+    backgroundColor: '#85BCFF',
   },
   title: {
     marginTop: 16,
@@ -63,5 +73,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
     fontWeight: 'bold',
+  },
+  today: {
+    marginTop: 16,
+    // paddingVertical: 8,
+    color: '#20232a',
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 150,
   },
 });

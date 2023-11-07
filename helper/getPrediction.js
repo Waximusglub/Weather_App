@@ -22,8 +22,15 @@ const getPrediction = async () => {
 
         prediction.map((dia) => {
 
+          // Filtar la data que surti solament el dia i treure els 0 del dies 01, 02, 03...
+          var date = dia.fecha.substring(8,10);
+          if(date.charAt(0) == '0' ){
+            date = date.substring(1);
+            console.log(date)
+          }
+
           const obj={
-            fecha: dia.fecha,
+            fecha: date,
             // probPrecipitacion: dia.probPrecipitacion,
             // cotaNieveProv: dia.cotaNieveProv,
             // estadoCielo: dia.estadoCielo,
